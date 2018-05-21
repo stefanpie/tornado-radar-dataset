@@ -1,0 +1,3 @@
+1996 to 2017
+
+removed events with missing location data
