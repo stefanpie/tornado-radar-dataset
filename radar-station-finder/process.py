@@ -1,8 +1,8 @@
-import pandas as pd
-from datetime import datetime, timedelta
-import arrow
-from math import radians, cos, sin, asin, sqrt
 import csv
+from math import radians, cos, sin, asin, sqrt
+
+import arrow
+import pandas as pd
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -13,12 +13,12 @@ def haversine(lon1, lat1, lon2, lat2):
     # convert decimal degrees to radians 
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     # haversine formula 
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a)) 
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a))
     # Radius of earth in kilometers is 6371
-    km = 6371* c
+    km = 6371 * c
     return km
 
 
@@ -33,7 +33,7 @@ df.info()
 
 for index, row in df.iterrows():
 
-    print(row["BEGIN_DATE_TIME"], " : ",  row["STATE"], " : ", row["TOR_F_SCALE"])
+    print(row["BEGIN_DATE_TIME"], " : ", row["STATE"], " : ", row["TOR_F_SCALE"])
 
     # This section is for processing the timestamps to format the date in the iso8061 format and calculate the elapsed time in minutes
     # print(row["BEGIN_DATE_TIME"], row["END_DATE_TIME"], row["CZ_TIMEZONE"])
@@ -65,18 +65,17 @@ for index, row in df.iterrows():
     df.loc[index, 'END_DATE_TIME'] = end_iso8061
     df.loc[index, 'ELAPSED_TIME_MINUTES'] = diff_minutes
 
-
     # This section is for finding the nearest dopplar radar station
     tor_lat = (float(row["BEGIN_LAT"]) + float(row["END_LAT"])) / 2
     tor_lon = (float(row["BEGIN_LON"]) + float(row["END_LON"])) / 2
 
     distances = []
     for s in radar_station_locations:
-        distances.append({'distance': haversine(tor_lon, tor_lat, float(s['LONGITUDE']), float(s['LATITUDE'])), 'station': s})
+        distances.append(
+            {'distance': haversine(tor_lon, tor_lat, float(s['LONGITUDE']), float(s['LATITUDE'])), 'station': s})
     nearest_radar_station = min(distances, key=lambda x: x['distance'])['station']
     # print(tor_lat, tor_lon)
     # print(nearest_radar_station)
     df.loc[index, 'NEAREST_RADAR_STATION'] = nearest_radar_station['STATION_ID']
-
 
 df.to_csv("processed_data.csv", encoding='utf-8', index=False)

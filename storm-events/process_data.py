@@ -1,16 +1,14 @@
 """
-This script porcesses NOAA Strom Event Details data (csv) files to extact only tornado and waterspout events.
+This script porcesses NOAA Strom Event Details data (csv) files to extract only tornado and waterspout events.
 The script outputs the processed data as new csv files.
 
 Author: Stefan Abi-Karam
 """
 
-
 import os
 import pandas as pd
 
-
-input_dir= "./"
+input_dir = "./"
 
 data = []
 
@@ -26,4 +24,4 @@ for x in data:
     df = df[((df.EVENT_TYPE == "Tornado") | (df.EVENT_TYPE == "Waterspout"))]
     year = df['YEAR'].iloc[0]
     print(year)
-    df.to_csv(str(year)+".csv", encoding='utf-8', index=False)
+    df.to_csv(str(year) + ".csv", encoding='utf-8', index=False)

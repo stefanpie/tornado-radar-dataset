@@ -1,9 +1,6 @@
-import gzip
 import os
-import shutil
 import re
 import subprocess
-import time
 
 data_dir_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', 'radar_data')
 netcdf_tools_jar_file_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', 'toolsUI-4.6.jar')
@@ -20,7 +17,7 @@ total_files = 0
 for root, dirs, files in os.walk(data_dir_path):
     for file in files:
         if file.endswith(".gz"):
-             total_files += 1
+            total_files += 1
 
 files_processed = 0
 
@@ -30,10 +27,8 @@ for root, dirs, files in os.walk(data_dir_path):
     for file in files:
         if file.endswith(".gz"):
             if not os.path.isfile((gz_match.sub('.nc', os.path.join(root, file)))):
-
                 gz_file_path = os.path.join(root, file)
                 nexrad_file_path = gz_match.sub('.nexrad', gz_file_path)
-
 
                 command = gz_decompress_command_template.format(gz_file_path, nexrad_file_path)
                 print(command)
@@ -46,12 +41,11 @@ for root, dirs, files in os.walk(data_dir_path):
                 #     with open(nexrad_file_path, 'wb') as f_out:
                 #         shutil.copyfileobj(f_in, f_out, length=8*1024)
 
-
                 print("Unzipped data to: ", nexrad_file_path)
                 nc3_file_path = gz_match.sub('.nc3', gz_file_path)
 
-
-                command = netcdf_convert_command_template.format(netcdf_tools_jar_file_path, nexrad_file_path, nc3_file_path)
+                command = netcdf_convert_command_template.format(netcdf_tools_jar_file_path, nexrad_file_path,
+                                                                 nc3_file_path)
                 print(command)
                 process = subprocess.call(command)
                 print(process)

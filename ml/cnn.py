@@ -1,10 +1,9 @@
 import keras
 from keras.models import Sequential
-from keras.layers import Input, Dense, Activation, Conv2D, MaxPooling2D,Flatten,Dropout
+from keras.layers import Input, Dense, Activation, Conv2D, MaxPooling2D, Flatten, Dropout
 
 import numpy as np
 from matplotlib import pyplot as plt
-
 
 print(keras.__version__)
 

@@ -1,10 +1,9 @@
 import csv
-import nexradaws
 import datetime
-import os, sys
-from pathlib import Path
 import json
+import os
 
+import nexradaws
 
 base_dir = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', 'radar_data')
 print(base_dir)

@@ -1,13 +1,12 @@
-import numpy as np
-import scipy.signal
 import matplotlib.pyplot as plt
-import netCDF4 as nc4
+import netCDF4
+import numpy as np
 
-f = nc4.Dataset('test1.nc','r')
+f = netCDF4.Dataset('test1.nc', 'r')
 print(f.data_model)
 
 for name in f.ncattrs():
-    print("Global attr", name, "=", getattr(f,name))
+    print("Global attr", name, "=", getattr(f, name))
 
 print(f.dimensions['scanV'])
 print(f.dimensions['gateV'])
@@ -32,11 +31,9 @@ for x in range(len(f.variables['RadialVelocity'])):
     lowest_angle[lowest_angle == 0] = np.nan
     lowest_angle[lowest_angle == 1] = np.nan
 
-
     gates = f.variables['distanceV']
     angles = np.linspace(0, 360, 360)
-    #angles = f.variables['azimuthV'][x]
-
+    # angles = f.variables['azimuthV'][x]
 
     lowest_angle[lowest_angle == 0] = np.nan
     lowest_angle[lowest_angle == 1] = np.nan
@@ -44,14 +41,6 @@ for x in range(len(f.variables['RadialVelocity'])):
     r, theta = np.meshgrid(gates, angles)
     print(theta)
 
-
-
-    plt.pcolormesh(angles, gates, lowest_angle)
-    plt.colorbar() #need a colorbar to show the intensity scale
-    plt.show() #boom
-
-    edge_kernel = np.array([[0,-1,0],[-1,5,-1],[0,-1,0]])
-    edges = scipy.signal.convolve2d(lowest_angle, edge_kernel, 'valid')
-
-    plt.imshow(edges, cmap='gray')
-    plt.show()
+    plt.pcolormesh(angles, gates, lowest_angle, polar=True)
+    plt.colorbar()  # need a color bar to show the intensity scale
+    plt.show()  # boom
