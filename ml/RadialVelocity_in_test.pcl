@@ -1,0 +1,83 @@
+// BETA BETA BETA
+// Script parsed by PanoplyCL to create a plot. Usage:
+// java -jar PanoplyCL.jar RadialVelocity_in_test.pcl
+
+// Open a dataset.
+var ncdata1 = panoply.openDataset ( "/C:/Users/stefan/Desktop/nc-processing-test/test.nc" );
+
+// Select a variable.
+var ncvar1 = ncdata1.getVariable ( "RadialVelocity" );
+
+// Create the plot.
+var myplot = panoply.createPlot ( "generic2d", ncvar1, "radialV", "gateV" );
+
+// Variable #1 (RadialVelocity), dim 1 (scanV) -- Set to step 2 of 11
+myplot.setVarDimension ( 1, 1, 2 );
+
+// Specify plot settings.
+myplot.set ( "size-factor", 240 );
+myplot.set ( "size-width", 80 );
+myplot.set ( "size-height", 45 );
+
+myplot.set ( "title-text", "Radial Velocity / KAMX (Miami,FL,US) / 2016-02-16T12:56:34Z" );
+myplot.set ( "font-master", "SansSerif" );
+
+myplot.set ( "color-background", "white" );
+myplot.set ( "interpolate", true );
+
+myplot.set ( "color-invalids", "rgb(191,191,191)" );
+
+myplot.set ( "scale-colorbar", "CB_YlGnBu.cpt" );
+myplot.set ( "scale-width", 60 );
+myplot.set ( "scale-reverse", false );
+myplot.set ( "scale-outlier-shape", "triangle" );
+myplot.set ( "scale-outlier-side", "both" );
+myplot.set ( "scale-outlier-gap", "thin" );
+myplot.set ( "scale-tick-size", 11.0 );
+myplot.set ( "scale-label-location", "above" );
+
+myplot.set ( "scale-min", -26.0 );
+myplot.set ( "scale-max", 26.0 );
+myplot.set ( "scale-div-major", 5 );
+myplot.set ( "scale-div-minor", 2 );
+myplot.set ( "scale-exponent", 0 );
+myplot.set ( "scale-method", "scalar" );
+myplot.set ( "scale-label-custom", false );
+myplot.set ( "scale-tick-format", "%.2f" );
+
+myplot.set ( "scale-minmax-note", true );
+myplot.set ( "scale-minmax-format", "Same" );
+
+myplot.set ( "grid-weight", 50 );
+myplot.set ( "grid-style", "solid" );
+myplot.set ( "grid-color", "black" );
+
+myplot.set ( "xaxis-method", "SCALAR" );
+myplot.set ( "xaxis-units", "" );
+myplot.set ( "xaxis-left", 0.0 );
+myplot.set ( "xaxis-right", 360.0 );
+myplot.set ( "xaxis-div-major", 8 );
+myplot.set ( "xaxis-div-minor", 2 );
+myplot.set ( "xaxis-tick-format", "%.1f" );
+myplot.set ( "xaxis-tick-size", 9.0 );
+myplot.set ( "xaxis-label-size", 11.0 );
+myplot.set ( "xaxis-label-custom", true );
+myplot.set ( "xaxis-label-text", "Radar Angle (degrees)" );
+
+myplot.set ( "yaxis-method", "SCALAR" );
+myplot.set ( "yaxis-units", "" );
+myplot.set ( "yaxis-bottom", 0.0 );
+myplot.set ( "yaxis-top", 1000.0 );
+myplot.set ( "yaxis-div-major", 5 );
+myplot.set ( "yaxis-div-minor", 2 );
+myplot.set ( "yaxis-tick-format", "%.1f" );
+myplot.set ( "yaxis-tick-size", 9.0 );
+myplot.set ( "yaxis-label-size", 11.0 );
+myplot.set ( "yaxis-label-custom", true );
+myplot.set ( "yaxis-label-text", "Gate (? distance from radar)" );
+myplot.set ( "contour-weight", 75 );
+myplot.set ( "contour-style", "none" );
+
+
+// Save plot image to disk.
+myplot.saveImage ( "PNG", "RadialVelocity_in_test.png" );
