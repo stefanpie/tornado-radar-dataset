@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import netCDF4
 import numpy as np
+from scipy import stats
 
 f = netCDF4.Dataset('test1.nc', 'r')
 print(f.data_model)
@@ -26,13 +27,19 @@ time_start = getattr(f, 'time_coverage_start')
 
 for x in range(f.dimensions['scanV'].size):
     # TODO figure out how to calculate the right angle of elevation from netcdf file
-    angle = np.median(f.variables['elevationV'][x])
+    angle = f.variables['elevationV'][x]
+    #angle = stats.mode((f.variables['elevationV'][x]), axis=None)[0][0]
+    angle = np.mean(angle)
+    print(angle)
+    angle = round(angle, 2)
+    print(angle)
 
     lowest_angle = f.variables['RadialVelocity'][x]
     lowest_angle = np.array(lowest_angle)
     lowest_angle[lowest_angle == 0] = np.nan
     lowest_angle[lowest_angle == 1] = np.nan
     # lowest_angle = (lowest_angle + f.variables['RadialVelocity'].add_offset) * f.variables['RadialVelocity'].scale_factor
+    lowest_angle = lowest_angle / f.variables['RadialVelocity'].scale_factor
     lowest_angle = lowest_angle.transpose()
 
     gates = np.array(f.variables['distanceV'])
@@ -48,7 +55,11 @@ for x in range(f.dimensions['scanV'].size):
     ax.set_title(station_id + " / " + station_name + " / " + time_start + " / " + "{:.4f}".format(angle) + " degrees")
     ax.set_xlabel('Azimuth angle in degrees: 0 = true north, 90 = east')
     ax.set_ylabel('Distance from radar in meters')
-    bar = fig.colorbar(im, ticks=range(-35, 40, 5), orientation='horizontal')
+    bar = fig.colorbar(im, ticks=range(-70, 75, 5), orientation='horizontal')
     bar.set_label('Radial velocity in m/s')
 
     fig.show()
+
+print(np.array(f.variables['azimuthV'][0].size))
+for x in np.array(f.variables['azimuthV'][0].size):
+    pass
