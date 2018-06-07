@@ -159,7 +159,7 @@ def plot_cross_section(data_product_name):
         data_product_key = 'V_HI'
 
     num_of_azimuths = f.dimensions['radial' + data_product_key].size
-    for x in range(44, 48, 1):
+    for x in range(0, 360, 2):
         azimuth = x
         radar_elevation_above_sea_level = getattr(f, 'StationElevationInMeters')
         radar_tower_height = 0
@@ -188,7 +188,9 @@ def plot_cross_section(data_product_name):
         for elevation_index in range(f.dimensions['scan' + data_product_key].size):
             angles = np.array(f.variables['azimuth' + data_product_key][elevation_index])
             min_index = np.argmin(angles)
-            offset = azimuth-min_index
+            offset = azimuth+min_index
+            if offset >= len(angles):
+                offset -= len(angles)
             data_at_elevation = data_product[elevation_index][offset]
             data_at_elevations.append(data_at_elevation)
         data_at_elevations = np.array(data_at_elevations)
@@ -224,8 +226,8 @@ def plot_cross_section(data_product_name):
         distances = np.array(distances) / 1000
 
         fig, ax = plt.subplots()
-        ax.set_xlim(30, 80)
-        ax.set_ylim(0, 10)
+        ax.set_xlim(0, 200)
+        ax.set_ylim(0, 30)
         ax.pcolormesh(distances, heights, data_at_elevations)
         for i in range(len(data_at_elevations)):
             ax.plot(distances[i], heights[i], label="{:.2f}".format(elevation_angles[i]), linestyle='--', linewidth = 1)
@@ -234,10 +236,11 @@ def plot_cross_section(data_product_name):
         ax.set_ylabel('Perpendicular Altitude Above the Earth (km)')
         title = "Cross Section / " + "{:.2f}".format(avg_azimuth_data[azimuth]) + "° / " + str(data_product_name)
         ax.set_title(str(title))
-        fig.show()
+        # fig.show()
+        fig.savefig("{:.2f}".format(avg_azimuth_data[azimuth]) + '.png')
+        print(azimuth)
 
 
 
 plot_cross_section('Reflectivity')
-plot_cross_section('RadialVelocity')
-plot_cross_section('SpectrumWidth')
+
