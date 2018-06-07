@@ -6,7 +6,7 @@ data_dir_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', '
 netcdf_tools_jar_file_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', 'toolsUI-4.6.jar')
 
 gz_match = re.compile('.gz')
-gz_decompress_command_template = "7z x {} -so > {}"
+gz_decompress_command_template = "7z elevation_index {} -so > {}"
 netcdf_convert_command_template = "java -classpath {} ucar.nc2.FileWriter -in {} -out {}"
 netcdf_compressor_command_template = "nccopy -d1 {} {}"
 
